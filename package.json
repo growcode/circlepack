@@ -26,14 +26,16 @@
     "eslint-plugin-chai-friendly": "^0.4.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsdoc": "^15.8.0",
+    "jsdom": "15.1.1",
+    "jsdom-global": "3.0.2",
     "mocha": "^6.2.0",
     "nyc": "^14.1.1",
     "sinon": "^7.4.1"
   },
   "scripts": {
     "build": "db-scripts-bundle --size-snapshot",
-    "test": "BABEL_ENV='test' mocha",
-    "test:watch": "BABEL_ENV='test' mocha --watch",
+    "test": "BABEL_ENV='test' mocha -r jsdom-global/register",
+    "test:watch": "BABEL_ENV='test' mocha --watch -r jsdom-global/register",
     "cover": "npm run cover:html",
     "cover:html": "nyc --reporter=html npm run test",
     "cover:html:open": "npm run cover:html && open ./coverage/index.html",
