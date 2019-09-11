@@ -8,7 +8,11 @@ Create a manager with a center value:
 
 ```
 const circlePackManager = new CirclePackManager({
-  center: new THREE.Vector2(0, 0)
+  center: new THREE.Vector2(0, 0),
+  onUpdate: () => {
+    // optional update callback. example use case might be to update label
+    // overlays, update webgl geometry attribute flags, etc.
+  }
 });
 ```
 
