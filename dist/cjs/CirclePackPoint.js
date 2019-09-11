@@ -1,9 +1,11 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 exports.__esModule = true;
 exports.default = void 0;
 
-var THREE = require('three');
+var _Vector = _interopRequireDefault(require("./Vector2"));
 
 var Point =
 /*#__PURE__*/
@@ -13,14 +15,14 @@ function () {
       opts = {};
     }
 
-    this.position = new THREE.Vector2(opts.x, opts.y);
-    this.velocity = new THREE.Vector2();
+    this.position = new _Vector.default(opts.x, opts.y);
+    this.velocity = new _Vector.default();
     this.radius = opts.radius;
     this.points = opts.pointsArray;
     this.manager = opts.manager; // reference to CirclePackManager instance
 
     this.index = opts.index;
-    this._tmpVec = new THREE.Vector2(); // reused for various calculations
+    this._tmpVec = new _Vector.default(); // reused for various calculations
 
     this.points[this.index] = this.position.x;
     this.points[this.index + 1] = this.position.y;

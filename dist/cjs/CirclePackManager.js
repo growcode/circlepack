@@ -1,9 +1,11 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 exports.__esModule = true;
 exports.default = void 0;
 
-var THREE = require('three');
+var _Vector = _interopRequireDefault(require("./Vector2"));
 
 var CirclePackManager =
 /*#__PURE__*/
@@ -16,16 +18,16 @@ function () {
     this.tightness = 0.5;
     this.active = true;
     this.points = [];
-    this.center = opts.center;
+    this.center = opts.center || new _Vector.default();
     this.volume = 0;
     this.updateCallback = opts.onUpdate || null; // for optional interaction. positioned offscreen initially
 
-    this.mouse = new THREE.Vector2(window.innerHeight * 2, window.innerHeight * 2);
+    this.mouse = new _Vector.default(window.innerHeight * 2, window.innerHeight * 2);
     this.mouseRadius = 100;
     this.mouseInteractive = true;
-    this._tmpPointA = new THREE.Vector2();
-    this._tmpPointB = new THREE.Vector2();
-    this._tmpVec = new THREE.Vector2();
+    this._tmpPointA = new _Vector.default();
+    this._tmpPointB = new _Vector.default();
+    this._tmpVec = new _Vector.default();
   }
 
   var _proto = CirclePackManager.prototype;

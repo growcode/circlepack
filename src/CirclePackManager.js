@@ -5,7 +5,7 @@ export default class CirclePackManager {
     this.tightness = 0.5;
     this.active = true;
     this.points = [];
-    this.center = opts.center;
+    this.center = opts.center || new Vector2();
     this.volume = 0;
     this.updateCallback = opts.onUpdate || null;
 
