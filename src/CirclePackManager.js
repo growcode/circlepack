@@ -1,4 +1,4 @@
-const THREE = require('three');
+import Vector2 from './Vector2';
 
 export default class CirclePackManager {
   constructor(opts = {}) {
@@ -10,13 +10,13 @@ export default class CirclePackManager {
     this.updateCallback = opts.onUpdate || null;
 
     // for optional interaction. positioned offscreen initially
-    this.mouse = new THREE.Vector2(window.innerHeight * 2, window.innerHeight * 2);
+    this.mouse = new Vector2(window.innerHeight * 2, window.innerHeight * 2);
     this.mouseRadius = 100;
     this.mouseInteractive = true;
 
-    this._tmpPointA = new THREE.Vector2();
-    this._tmpPointB = new THREE.Vector2();
-    this._tmpVec = new THREE.Vector2();
+    this._tmpPointA = new Vector2();
+    this._tmpPointB = new Vector2();
+    this._tmpVec = new Vector2();
   }
 
   calculateVolume() {
