@@ -5,13 +5,13 @@
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "sideEffects": false,
-  "private": true,
   "files": [
     "dist",
     "doc"
   ],
   "dependencies": {
-    "@babel/runtime": "^7.5.5"
+    "@babel/runtime": "^7.5.5",
+    "three": "^0.108.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
