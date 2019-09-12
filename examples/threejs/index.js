@@ -22,7 +22,7 @@ const scene = new THREE.Scene();
 const smallerDimension = viewportWidth > viewportHeight ? viewportHeight : viewportWidth;
 
 // import from UMD bundle
-const { CirclePackManager, CirclePackPoint } = window['@thisisgrow/circlepack'];
+const { CirclePackManager } = window['@thisisgrow/circlepack'];
 const circlePackManager = new CirclePackManager();
 circlePackManager.mouseRadius = smallerDimension / 5;
 
