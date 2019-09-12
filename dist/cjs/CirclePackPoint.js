@@ -18,10 +18,8 @@ function () {
     this.position = new _Vector.default(opts.x, opts.y);
     this.velocity = new _Vector.default();
     this.radius = opts.radius;
-    this.points = opts.pointsArray;
-    this.manager = opts.manager; // reference to CirclePackManager instance
-
-    this.index = opts.index;
+    this.manager = opts.manager;
+    this.index = opts.index * 2;
     this._tmpVec = new _Vector.default(); // reused for various calculations
 
     this.updateBackingArray();
@@ -61,8 +59,8 @@ function () {
   };
 
   _proto.updateBackingArray = function updateBackingArray() {
-    this.points[this.index] = this.position.x;
-    this.points[this.index + 1] = this.position.y;
+    this.manager.pointsArray[this.index] = this.position.x;
+    this.manager.pointsArray[this.index + 1] = this.position.y;
   };
 
   return Point;

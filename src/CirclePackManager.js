@@ -1,10 +1,12 @@
 import Vector2 from './Vector2';
+import CirclePackPoint from './CirclePackPoint';
 
 export default class CirclePackManager {
   constructor(opts = {}) {
     this.tightness = 1;
     this.active = true;
     this.points = [];
+    this.pointsArray = new Float32Array(opts.size || 100);
     this.center = opts.center || new Vector2();
     this.area = 0;
     this.radius = 0;
@@ -15,8 +17,6 @@ export default class CirclePackManager {
     this.mouseRadius = 100;
     this.mouseInteractive = true;
 
-    this._tmpPointA = new Vector2();
-    this._tmpPointB = new Vector2();
     this._tmpVec = new Vector2();
   }
 
@@ -28,6 +28,21 @@ export default class CirclePackManager {
     }
 
     this.radius = Math.sqrt(this.area / Math.PI);
+  }
+
+  reset(size) {
+    this.points = [];
+    this.pointsArray = new Float32Array(size * 2);
+  }
+
+  addPoint(x, y, radius) {
+    this.points.push(new CirclePackPoint({
+      x,
+      y,
+      radius,
+      index: this.points.length,
+      manager: this,
+    }));
   }
 
   update() {

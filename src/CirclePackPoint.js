@@ -5,10 +5,9 @@ export default class Point {
     this.position = new Vector2(opts.x, opts.y);
     this.velocity = new Vector2();
     this.radius = opts.radius;
-    this.points = opts.pointsArray;
-    this.manager = opts.manager; // reference to CirclePackManager instance
+    this.manager = opts.manager;
 
-    this.index = opts.index;
+    this.index = opts.index * 2;
     this._tmpVec = new Vector2(); // reused for various calculations
 
     this.updateBackingArray();
@@ -44,7 +43,7 @@ export default class Point {
   }
 
   updateBackingArray() {
-    this.points[this.index] = this.position.x;
-    this.points[this.index + 1] = this.position.y;
+    this.manager.pointsArray[this.index] = this.position.x;
+    this.manager.pointsArray[this.index + 1] = this.position.y;
   }
 }

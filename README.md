@@ -8,44 +8,33 @@ Packs circles into a larger circle container using physics.
 
 ## Usage
 
-Create a manager with a center value:
+Internally, CirclePackManager stores points in a flat Float32Array in the form of `[x, y, x, y, x, y, ..]`. This allows us to be efficient when sending data to WebGL or (in the future) return data from workers. This also means that the number of points has to be known in advance because Float32Arrays sizes are static.
+
+Create a manager:
 
 ```
 const circlePackManager = new CirclePackManager({
-  center: new Vector2(0, 0),
+  size: pointCount, // number of points, defaults to 100
+  center: new Vector2(0, 0), // optional, defaults to [0, 0]
   onUpdate: () => {
-    // optional update callback. example use case might be to update label
-    // overlays, update webgl geometry attribute flags, etc.
+    // optional update callback. example use case might be to update
+    // DOM overlays, update webgl geometry attribute flags, etc.
   }
 });
 ```
-
-Create an array to store position values. This uses a flat array in the form of `[x, y, x, y, x, y, ..]` in order to be efficient when sending data to/from workers or WebGL.
-
-`const points = new Float32Array(pointCount * 2);`
 
 Add a bunch of points:
 
 ```
 for (let i = 0; i < pointCount; i += 1) {
-  circlePackManager.points.push(new CirclePackPoint({
-    x: Math.random() - .5,
-    y: Math.random() - .5,
-    radius: Math.random() * 10,
-
-    // these values are used as references and for sending data back to main.
-    // a future version will let the manager handle adding these things directly.
-    manager: circlePackManager,
-    index: i * 2, // x2 because we have to account for x and y positions
-    pointsArray: points
-  }));
+  circlePackManager.addPoint(
+    Math.random() - .5 * 200, // x position
+    Math.random() - .5 * 200, // y position
+    Math.random() * 10,       // radius
+  );
 }
-```
 
-After all of your points are added, tell the manager to calculate volume:
-
-```
-circlePackManager.calculateVolume();
+circlePackManager.calculateArea(); // required!
 ```
 
 Finally, update the system on each frame:
@@ -54,6 +43,12 @@ Finally, update the system on each frame:
 circlePackManager.update();
 ```
 
+
+To reset a manager, you can call `reset` along with the size to reinitialize point arrays:
+
+```
+circlePackManager.reset(pointCount);
+```
+
 ## Roadmap
-- Let CirclePackManager handle `pointsArray` rather than maintaining it in the parent scope.
 - Optional workers

@@ -7,6 +7,8 @@ exports.default = void 0;
 
 var _Vector = _interopRequireDefault(require("./Vector2"));
 
+var _CirclePackPoint = _interopRequireDefault(require("./CirclePackPoint"));
+
 var CirclePackManager =
 /*#__PURE__*/
 function () {
@@ -18,6 +20,7 @@ function () {
     this.tightness = 1;
     this.active = true;
     this.points = [];
+    this.pointsArray = new Float32Array(opts.size || 100);
     this.center = opts.center || new _Vector.default();
     this.area = 0;
     this.radius = 0;
@@ -26,8 +29,6 @@ function () {
     this.mouse = new _Vector.default(window.innerHeight * 2, window.innerHeight * 2);
     this.mouseRadius = 100;
     this.mouseInteractive = true;
-    this._tmpPointA = new _Vector.default();
-    this._tmpPointB = new _Vector.default();
     this._tmpVec = new _Vector.default();
   }
 
@@ -41,6 +42,21 @@ function () {
     }
 
     this.radius = Math.sqrt(this.area / Math.PI);
+  };
+
+  _proto.reset = function reset(size) {
+    this.points = [];
+    this.pointsArray = new Float32Array(size * 2);
+  };
+
+  _proto.addPoint = function addPoint(x, y, radius) {
+    this.points.push(new _CirclePackPoint.default({
+      x: x,
+      y: y,
+      radius: radius,
+      index: this.points.length,
+      manager: this
+    }));
   };
 
   _proto.update = function update() {

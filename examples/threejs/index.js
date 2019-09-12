@@ -34,7 +34,6 @@ const pointConfig = {
   tightness: circlePackManager.tightness,
 };
 
-let points;
 let indices;
 let scales;
 let mesh;
@@ -128,10 +127,9 @@ function createShaderMaterial() {
  * @param {number} total - number of points to create
  */
 function setupCircles(total) {
-  points = new Float32Array(pointConfig.total * 2);
   indices = new Uint8Array(pointConfig.total);
   scales = new Float32Array(pointConfig.total);
-  circlePackManager.points = [];
+  circlePackManager.reset(pointConfig.total);
 
   if (mesh) {
     scene.remove(mesh);
@@ -141,14 +139,11 @@ function setupCircles(total) {
     scales[i] = Math.random() / 3 + 0.1;
     indices[i] = i;
 
-    circlePackManager.points.push(new CirclePackPoint({
-      x: (Math.random() - 0.5) * viewportWidth / 3,
-      y: (Math.random() - 0.5) * viewportHeight / 3,
-      index: i * 2,
-      radius: scales[i] * pointConfig.radius,
-      manager: circlePackManager,
-      pointsArray: points,
-    }));
+    circlePackManager.addPoint(
+      (Math.random() - 0.5) * viewportWidth / 3,
+      (Math.random() - 0.5) * viewportHeight / 3,
+      scales[i] * pointConfig.radius,
+    );
   }
 
   circlePackManager.calculateArea();
@@ -158,7 +153,7 @@ function setupCircles(total) {
     createShaderMaterial(),
   );
 
-  mesh.geometry.addAttribute('instancePosition', new THREE.InstancedBufferAttribute(points, 2));
+  mesh.geometry.addAttribute('instancePosition', new THREE.InstancedBufferAttribute(circlePackManager.pointsArray, 2));
   mesh.geometry.addAttribute('instanceID', new THREE.InstancedBufferAttribute(indices, 1));
   mesh.geometry.addAttribute('instanceScale', new THREE.InstancedBufferAttribute(scales, 1));
 
