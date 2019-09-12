@@ -1,6 +1,6 @@
 {
   "name": "@thisisgrow/circlepack",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Circle packing using physics",
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
