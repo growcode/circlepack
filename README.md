@@ -55,6 +55,5 @@ circlePackManager.update();
 ```
 
 ## Roadmap
-- Remove THREE dependency. Currently only uses the Vector2 implementation.
 - Let CirclePackManager handle `pointsArray` rather than maintaining it in the parent scope.
 - Optional workers
