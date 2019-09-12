@@ -1,8 +1,4 @@
 {
   "private": true,
-  "dependencies": {
-    "dat.gui": "^0.7.6",
-    "glslify": "^7.0.0",
-    "three": "^0.108.0"
-  }
+  "dependencies": {}
 }
