@@ -1,5 +1,5 @@
 /* eslint-disable prefer-destructuring */
-/* global dat, THREE, CirclePackManager, CirclePackPoint */
+/* global dat, THREE */
 
 const gui = new dat.GUI();
 
@@ -30,7 +30,8 @@ const pointConfig = {
   total: 200,
   radius: smallerDimension / 4,
   mouseInteractive: circlePackManager.mouseInteractive,
-  mouseRadius: circlePackManager.mouseRadius
+  mouseRadius: circlePackManager.mouseRadius,
+  tightness: circlePackManager.tightness,
 };
 
 let points;
@@ -150,7 +151,7 @@ function setupCircles(total) {
     }));
   }
 
-  circlePackManager.calculateVolume();
+  circlePackManager.calculateArea();
 
   mesh = new THREE.Mesh(
     new THREE.InstancedBufferGeometry().copy(new THREE.PlaneBufferGeometry(pointConfig.radius, pointConfig.radius)),
@@ -193,9 +194,16 @@ gui.add(pointConfig, 'radius').onChange(() => setupCircles(pointConfig.total));
 gui.add(pointConfig, 'mouseInteractive').onChange(() => {
   circlePackManager.mouseInteractive = pointConfig.mouseInteractive;
 });
+
 gui.add(pointConfig, 'mouseRadius').onChange(() => {
   circlePackManager.mouseRadius = pointConfig.mouseRadius;
 });
+
+gui.add(pointConfig, 'tightness')
+  .max(1).min(0).step(0.01)
+  .onChange(() => {
+    circlePackManager.tightness = pointConfig.tightness;
+  });
 
 const render = () => {
   circlePackManager.update();
