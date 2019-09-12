@@ -15,7 +15,7 @@ function () {
       opts = {};
     }
 
-    this.tightness = 0.5;
+    this.tightness = 0.9;
     this.active = true;
     this.points = [];
     this.center = opts.center || new _Vector.default();

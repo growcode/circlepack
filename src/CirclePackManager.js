@@ -2,7 +2,7 @@ import Vector2 from './Vector2';
 
 export default class CirclePackManager {
   constructor(opts = {}) {
-    this.tightness = 0.5;
+    this.tightness = 0.9;
     this.active = true;
     this.points = [];
     this.center = opts.center || new Vector2();

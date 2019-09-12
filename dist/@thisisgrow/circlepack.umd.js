@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
   typeof define === 'function' && define.amd ? define(['exports'], factory) :
-  (factory((global['@thisisgrow/circlepack'] = {})));
+  (factory((global['circlepack'] = {})));
 }(this, (function (exports) { 'use strict';
 
   var Vector2 =
@@ -84,7 +84,7 @@
         opts = {};
       }
 
-      this.tightness = 0.5;
+      this.tightness = 0.9;
       this.active = true;
       this.points = [];
       this.center = opts.center || new Vector2();
