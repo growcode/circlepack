@@ -28,7 +28,7 @@ circlePackManager.mouseRadius = smallerDimension / 5;
 
 const pointConfig = {
   total: 200,
-  radius: smallerDimension / 4,
+  radius: smallerDimension / 15,
   mouseInteractive: circlePackManager.mouseInteractive,
   mouseRadius: circlePackManager.mouseRadius,
   tightness: circlePackManager.tightness,
@@ -149,7 +149,7 @@ function setupCircles(total) {
   circlePackManager.calculateArea();
 
   mesh = new THREE.Mesh(
-    new THREE.InstancedBufferGeometry().copy(new THREE.PlaneBufferGeometry(pointConfig.radius, pointConfig.radius)),
+    new THREE.InstancedBufferGeometry().copy(new THREE.PlaneBufferGeometry(pointConfig.radius * 2.8, pointConfig.radius * 2.8)),
     createShaderMaterial(),
   );
 
@@ -161,9 +161,6 @@ function setupCircles(total) {
 }
 
 setupCircles(pointConfig.total);
-
-const guiEl = document.querySelector('.dg.ac');
-guiEl.style.zIndex = 10;
 
 const handleMouseMove = e => {
   if (e.touches) {

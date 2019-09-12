@@ -201,7 +201,7 @@
           if (j !== i) {
             // don't compare this point to itself
             dist = this.points[i].position.distanceToSquared(this.points[j].position);
-            radii = (this.points[i].radius + this.points[j].radius) / 3;
+            radii = this.points[i].radius + this.points[j].radius;
 
             if (dist < radii * radii) {
               // get direction between points
