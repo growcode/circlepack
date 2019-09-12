@@ -2,6 +2,10 @@
 
 Packs circles into a larger circle container using physics.
 
+![picture](./examples/circlepack.gif)
+
+([Click here for a live demo](https://circlepack.static.thisisgrow.com/))
+
 ## Usage
 
 Create a manager with a center value:
