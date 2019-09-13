@@ -10,10 +10,18 @@ let circles = [];
 // used to size elements relative to screensize so they fit in view
 const smallerDimension = viewportWidth > viewportHeight ? viewportHeight : viewportWidth;
 
+const pointConfig = {
+  total: 200,
+  radius: smallerDimension / 50,
+  mouseInteractive: true,
+  mouseRadius: smallerDimension / 5,
+  tightness: 1,
+};
+
 // import from UMD bundle
 const { WorkerWrapper } = window['@thisisgrow/circlepack'];
 
-const blob = new Blob(['('+WorkerWrapper.toString()+')()'], {type: 'application/javascript'});
+const blob = new Blob([ `(${WorkerWrapper.toString()})()` ], { type: 'application/javascript' });
 const circlePackWorker = new Worker(URL.createObjectURL(blob));
 
 circlePackWorker.addEventListener('message', e => {
@@ -24,14 +32,6 @@ circlePackWorker.addEventListener('message', e => {
     circles[i].setAttributeNS(null, 'cy', points[i * 2 + 1]);
   }
 });
-
-const pointConfig = {
-  total: 200,
-  radius: smallerDimension / 50,
-  mouseInteractive: true,
-  mouseRadius: smallerDimension / 5,
-  tightness: 1,
-};
 
 /**
  * sets up instanced circles

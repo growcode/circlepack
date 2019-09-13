@@ -38,7 +38,7 @@ let mesh;
 // import from UMD bundle
 const { WorkerWrapper } = window['@thisisgrow/circlepack'];
 
-const blob = new Blob(['('+WorkerWrapper.toString()+')()'], {type: 'application/javascript'});
+const blob = new Blob([ `(${WorkerWrapper.toString()})()` ], { type: 'application/javascript' });
 const circlePackWorker = new Worker(URL.createObjectURL(blob));
 
 circlePackWorker.addEventListener('message', e => {
