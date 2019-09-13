@@ -11,23 +11,26 @@ let circles = [];
 const smallerDimension = viewportWidth > viewportHeight ? viewportHeight : viewportWidth;
 
 // import from UMD bundle
-const { CirclePackManager } = window['@thisisgrow/circlepack'];
-const circlePackManager = new CirclePackManager({
-  onUpdate: () => {
-    circles.forEach((circle, i) => {
-      circle.setAttributeNS(null, 'cx', circlePackManager.points[i].position.x);
-      circle.setAttributeNS(null, 'cy', circlePackManager.points[i].position.y);
-    });
-  },
+const { WorkerWrapper } = window['@thisisgrow/circlepack'];
+
+const blob = new Blob(['('+WorkerWrapper.toString()+')()'], {type: 'application/javascript'});
+const circlePackWorker = new Worker(URL.createObjectURL(blob));
+
+circlePackWorker.addEventListener('message', e => {
+  const points = new Float32Array(e.data.points);
+
+  for (let i = 0; i < pointConfig.total; i += 1) {
+    circles[i].setAttributeNS(null, 'cx', points[i * 2]);
+    circles[i].setAttributeNS(null, 'cy', points[i * 2 + 1]);
+  }
 });
-circlePackManager.mouseRadius = smallerDimension / 5;
 
 const pointConfig = {
-  total: 800,
+  total: 200,
   radius: smallerDimension / 50,
-  mouseInteractive: circlePackManager.mouseInteractive,
-  mouseRadius: circlePackManager.mouseRadius,
-  tightness: circlePackManager.tightness,
+  mouseInteractive: true,
+  mouseRadius: smallerDimension / 5,
+  tightness: 1,
 };
 
 /**
@@ -36,7 +39,11 @@ const pointConfig = {
  * @param {number} total - number of points to create
  */
 function setupCircles(total) {
-  circlePackManager.reset(pointConfig.total);
+  circlePackWorker.postMessage({
+    action: 'setup',
+    pointCount: pointConfig.total,
+  });
+
   circles = [];
 
   const containerSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -50,13 +57,12 @@ function setupCircles(total) {
     const y = (Math.random() - 0.5) * viewportHeight / 3;
     const radius = (Math.random() + 0.4) * pointConfig.radius;
 
-    circlePackManager.addPoint(x, y, radius);
-
-    // min(vec3(.9 + sin(time) / 100.), vec3(
-    //   10. / (mod(v_instanceID, 2.)),
-    //   4. / (mod(v_instanceID, 10.) + 1.),
-    //   3. / (mod(v_instanceID, 10.) + 1.)
-    // ))
+    circlePackWorker.postMessage({
+      action: 'add',
+      point: {
+        x, y, radius,
+      },
+    });
 
     const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
     circle.setAttributeNS(null, 'cx', x);
@@ -72,7 +78,7 @@ function setupCircles(total) {
     containerSVG.appendChild(circle);
   }
 
-  circlePackManager.calculateArea();
+  circlePackWorker.postMessage({ action: 'calculateArea' });
 }
 
 setupCircles(pointConfig.total);
@@ -85,8 +91,11 @@ const handleMouseMove = e => {
     e.clientY = e.touches[0].clientY;
   }
 
-  circlePackManager.mouse.x = (e.clientX - (window.innerWidth) / 2) - 1;
-  circlePackManager.mouse.y = (e.clientY - (window.innerHeight) / 2) + 1;
+  circlePackWorker.postMessage({
+    action: 'updateMouse',
+    x: (e.clientX - (window.innerWidth) / 2) - 1,
+    y: (e.clientY - (window.innerHeight) / 2) + 1,
+  });
 };
 
 
@@ -97,21 +106,35 @@ window.addEventListener('touchmove', handleMouseMove);
 gui.add(pointConfig, 'total').step(1).onChange(() => setupCircles(pointConfig.total));
 gui.add(pointConfig, 'radius').onChange(() => setupCircles(pointConfig.total));
 gui.add(pointConfig, 'mouseInteractive').onChange(() => {
-  circlePackManager.mouseInteractive = pointConfig.mouseInteractive;
+  circlePackWorker.postMessage({
+    action: 'updateValue',
+    key: 'mouseInteractive',
+    value: pointConfig.mouseInteractive,
+  });
 });
 
 gui.add(pointConfig, 'mouseRadius').onChange(() => {
-  circlePackManager.mouseRadius = pointConfig.mouseRadius;
+  circlePackWorker.postMessage({
+    action: 'updateValue',
+    key: 'mouseRadius',
+    value: pointConfig.mouseRadius,
+  });
 });
 
 gui.add(pointConfig, 'tightness')
   .max(1).min(0).step(0.01)
   .onChange(() => {
-    circlePackManager.tightness = pointConfig.tightness;
+    circlePackWorker.postMessage({
+      action: 'updateValue',
+      key: 'tightness',
+      value: pointConfig.tightness,
+    });
   });
 
 const render = () => {
-  circlePackManager.update();
+  circlePackWorker.postMessage({
+    action: 'update',
+  });
 
   requestAnimationFrame(render);
 };

@@ -3,7 +3,7 @@
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 
 exports.__esModule = true;
-exports.Vector2 = exports.CirclePackPoint = exports.CirclePackManager = void 0;
+exports.WorkerWrapper = exports.Vector2 = exports.CirclePackPoint = exports.CirclePackManager = void 0;
 
 var _CirclePackManager = _interopRequireDefault(require("./CirclePackManager"));
 
@@ -16,3 +16,7 @@ exports.CirclePackPoint = _CirclePackPoint.default;
 var _Vector = _interopRequireDefault(require("./Vector2"));
 
 exports.Vector2 = _Vector.default;
+
+var _workerWrapper = _interopRequireDefault(require("./worker-wrapper"));
+
+exports.WorkerWrapper = _workerWrapper.default;
