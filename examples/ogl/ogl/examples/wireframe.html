@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, minimal-ui, viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <link rel="icon" type="image/png" href="assets/favicon.png">
+
+    <title>O-GL • Wireframe</title>
+    <link href="assets/main.css" rel="stylesheet">
+</head>
+<body>
+    <div class="Info">Wireframe. Model by Google Poly</div>
+    <script type="module">
+        import {Renderer, Camera, Transform, Texture, Program, Geometry, Mesh} from '../src/Core.js';
+        
+        const vertex = `
+            precision highp float;
+            precision highp int;
+
+            attribute vec2 uv;
+            attribute vec3 position;
+            attribute vec3 normal;
+
+            uniform mat4 modelViewMatrix;
+            uniform mat4 projectionMatrix;
+            uniform mat3 normalMatrix;
+
+            varying vec2 vUv;
+            varying vec3 vNormal;
+
+            void main() {
+                vUv = uv;
+                vNormal = normalize(normalMatrix * normal);
+                
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `;
+
+        const fragment = `
+            precision highp float;
+            precision highp int;
+
+            uniform float uTime;
+            uniform sampler2D tMap;
+
+            varying vec2 vUv;
+            varying vec3 vNormal;
+
+            void main() {
+                vec3 normal = normalize(vNormal);
+                vec3 tex = texture2D(tMap, vUv).rgb;
+                
+                vec3 light = normalize(vec3(0.5, 1.0, -0.3));
+                float shading = dot(normal, light) * 0.15;
+                gl_FragColor.rgb = tex + shading;
+                gl_FragColor.a = 1.0;
+            }
+        `;
+
+        {
+            const renderer = new Renderer({dpr: 2});
+            const gl = renderer.gl;
+            document.body.appendChild(gl.canvas);
+            gl.clearColor(1, 1, 1, 1);
+
+            const camera = new Camera(gl, {fov: 35});
+            camera.position.set(5, 3, 6);
+            camera.lookAt([0, 0, 0]);
+
+            function resize() {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.perspective({aspect: gl.canvas.width / gl.canvas.height});
+            }
+            window.addEventListener('resize', resize, false);
+            resize();
+
+            const scene = new Transform();
+
+            const texture = new Texture(gl);
+            const img = new Image();
+            img.onload = () => texture.image = img;
+            img.src = 'assets/croissant.jpg';
+
+            const program = new Program(gl, {
+                vertex,
+                fragment,
+                uniforms: {
+                    tMap: {value: texture},
+                },
+            });
+
+            let lineLoopMesh, wireframeMesh;
+            loadModel();
+            async function loadModel() {
+                const data = await (await fetch(`assets/croissant.json`)).json();
+
+                // Regular geometry with no modifications to be used with gl.LINE_LOOP version
+                const geometry = new Geometry(gl, {
+                    position: {size: 3, data: new Float32Array(data.position)},
+                    uv: {size: 2, data: new Float32Array(data.uv)},
+                    normal: {size: 3, data: new Float32Array(data.normal)},
+                });
+
+                // Using gl.LINE_LOOP or gl.LINE_STRIP as the draw mode will give an approximate wireframe.
+                // This is a simpler, lighter option if accuracy is not important (i.e. debugging).
+                lineLoopMesh = new Mesh(gl, {mode: gl.LINE_LOOP, geometry, program});
+                lineLoopMesh.setParent(scene);
+                lineLoopMesh.position.y = 1;
+
+                // For an accurate wireframe, triangle vertices need to be duplicated to make line pairs.
+                // Here we do so by generating indices. If your geometry is already indexed, this needs to be adjusted.
+                let index = new Uint16Array((data.position.length / 3 / 3) * 6);
+                for (let i = 0; i < data.position.length / 3; i += 3) {
+
+                    // For every triangle, make three line pairs (start, end)
+                    index.set([i, i + 1, i + 1, i + 2, i + 2, i], i * 2);
+                }
+
+                const wireframeGeometry = new Geometry(gl, {
+                    position: {size: 3, data: new Float32Array(data.position)},
+                    uv: {size: 2, data: new Float32Array(data.uv)},
+                    normal: {size: 3, data: new Float32Array(data.normal)},
+                    index: {data: index},
+                });
+
+                // use the gl.LINES draw mode
+                wireframeMesh = new Mesh(gl, {mode: gl.LINES, geometry: wireframeGeometry, program});
+                wireframeMesh.setParent(scene);
+                wireframeMesh.position.y = -1;
+            }
+
+            requestAnimationFrame(update);
+            function update() {
+                requestAnimationFrame(update);
+
+                if (lineLoopMesh) lineLoopMesh.rotation.y -= 0.005;
+                if (wireframeMesh) wireframeMesh.rotation.y += 0.005;
+
+                renderer.render({scene, camera});
+            }
+        }
+
+    </script>
+</body>
+</html>

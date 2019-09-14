@@ -3,12 +3,86 @@
 exports.__esModule = true;
 exports.default = workerWrapper;
 
-/* globals self */
+/* eslint-disable no-restricted-globals */
+
+/* global self */
 
 /**
  * Wraps circle pack manager in a worker-capable function
  */
 function workerWrapper() {
+  var Vector2 =
+  /*#__PURE__*/
+  function () {
+    function Vector2(x, y) {
+      this.x = x || 0;
+      this.y = y || 0;
+    }
+
+    var _proto = Vector2.prototype;
+
+    _proto.add = function add(vec) {
+      this.x += vec.x;
+      this.y += vec.y;
+      return this;
+    };
+
+    _proto.copy = function copy(vec) {
+      this.x = vec.x;
+      this.y = vec.y;
+      return this;
+    };
+
+    _proto.distanceTo = function distanceTo(vec) {
+      return Math.sqrt(this.distanceToSquared(vec));
+    };
+
+    _proto.distanceToSquared = function distanceToSquared(vec) {
+      var dx = this.x - vec.x;
+      var dy = this.y - vec.y;
+      return dx * dx + dy * dy;
+    };
+
+    _proto.divideScalar = function divideScalar(scalar) {
+      this.x /= scalar;
+      this.y /= scalar;
+      return this;
+    };
+
+    _proto.length = function length() {
+      return Math.sqrt(this.x * this.x + this.y * this.y);
+    };
+
+    _proto.multiplyScalar = function multiplyScalar(scalar) {
+      this.x *= scalar;
+      this.y *= scalar;
+      return this;
+    };
+
+    _proto.normalize = function normalize() {
+      return this.divideScalar(this.length() || 1);
+    };
+
+    _proto.set = function set(x, y) {
+      this.x = x;
+      this.y = y;
+    };
+
+    _proto.sub = function sub(vec) {
+      this.x -= vec.x;
+      this.y -= vec.y;
+      return this;
+    };
+
+    _proto.subVectors = function subVectors(vec, vec2) {
+      this.x = vec.x - vec2.x;
+      this.y = vec.y - vec2.y;
+      return this;
+    };
+
+    return Vector2;
+  }();
+
   var CirclePackPoint =
   /*#__PURE__*/
   function () {
@@ -27,9 +101,9 @@ function workerWrapper() {
       this.updateBackingArray();
     }
 
-    var _proto = CirclePackPoint.prototype;
+    var _proto2 = CirclePackPoint.prototype;
 
-    _proto.update = function update() {
+    _proto2.update = function update() {
       // apply gravitational force. this moves points towards the manager's defined center at all times
       var _dist = this.position.distanceTo(this.manager.center);
 
@@ -60,7 +134,7 @@ function workerWrapper() {
       this.updateBackingArray();
     };
 
-    _proto.updateBackingArray = function updateBackingArray() {
+    _proto2.updateBackingArray = function updateBackingArray() {
       this.manager.pointsArray[this.index] = this.position.x;
       this.manager.pointsArray[this.index + 1] = this.position.y;
     };
@@ -91,9 +165,9 @@ function workerWrapper() {
       this._tmpVec = new Vector2();
     }
 
-    var _proto2 = CirclePackManager.prototype;
+    var _proto3 = CirclePackManager.prototype;
 
-    _proto2.calculateArea = function calculateArea() {
+    _proto3.calculateArea = function calculateArea() {
       this.area = 0;
 
       for (var i = 0, total = this.points.length; i < total; i += 1) {
@@ -103,12 +177,12 @@ function workerWrapper() {
       this.radius = Math.sqrt(this.area / Math.PI);
     };
 
-    _proto2.reset = function reset(size) {
+    _proto3.reset = function reset(size) {
       this.points = [];
       this.pointsArray = new Float32Array(size * 2);
     };
 
-    _proto2.addPoint = function addPoint(x, y, radius) {
+    _proto3.addPoint = function addPoint(x, y, radius) {
       this.points.push(new CirclePackPoint({
         x: x,
         y: y,
@@ -118,7 +192,7 @@ function workerWrapper() {
       }));
     };
 
-    _proto2.update = function update() {
+    _proto3.update = function update() {
       if (!this.active) {
         return;
       } // pre-instantiate vars so we aren't doing it on each iteration
@@ -163,80 +237,7 @@ function workerWrapper() {
     return CirclePackManager;
   }();
 
-  var Vector2 =
-  /*#__PURE__*/
-  function () {
-    function Vector2(x, y) {
-      this.x = x || 0;
-      this.y = y || 0;
-    }
-
-    var _proto3 = Vector2.prototype;
-
-    _proto3.add = function add(vec) {
-      this.x += vec.x;
-      this.y += vec.y;
-      return this;
-    };
-
-    _proto3.copy = function copy(vec) {
-      this.x = vec.x;
-      this.y = vec.y;
-      return this;
-    };
-
-    _proto3.distanceTo = function distanceTo(vec) {
-      return Math.sqrt(this.distanceToSquared(vec));
-    };
-
-    _proto3.distanceToSquared = function distanceToSquared(vec) {
-      var dx = this.x - vec.x;
-      var dy = this.y - vec.y;
-      return dx * dx + dy * dy;
-    };
-
-    _proto3.divideScalar = function divideScalar(scalar) {
-      this.x /= scalar;
-      this.y /= scalar;
-      return this;
-    };
-
-    _proto3.length = function length() {
-      return Math.sqrt(this.x * this.x + this.y * this.y);
-    };
-
-    _proto3.multiplyScalar = function multiplyScalar(scalar) {
-      this.x *= scalar;
-      this.y *= scalar;
-      return this;
-    };
-
-    _proto3.normalize = function normalize() {
-      return this.divideScalar(this.length() || 1);
-    };
-
-    _proto3.set = function set(x, y) {
-      this.x = x;
-      this.y = y;
-    };
-
-    _proto3.sub = function sub(vec) {
-      this.x -= vec.x;
-      this.y -= vec.y;
-      return this;
-    };
-
-    _proto3.subVectors = function subVectors(vec, vec2) {
-      this.x = vec.x - vec2.x;
-      this.y = vec.y - vec2.y;
-      return this;
-    };
-
-    return Vector2;
-  }();
-
   var circlePackManager = new CirclePackManager();
-  new Vector2();
 
   self.onmessage = function (event) {
     if (event.data.action === 'setup') {
