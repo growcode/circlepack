@@ -17,7 +17,7 @@
     "@babel/plugin-transform-runtime": "^7.11.5",
     "@babel/preset-env": "^7.11.5",
     "@babel/register": "^7.11.5",
-    "@db-scripts/bundle": "^0.1.1",
+    "@db-scripts/bundle": "^0.1.2",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.1",
