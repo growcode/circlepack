@@ -123,7 +123,7 @@ export default function workerWrapper() {
 
   }
 
-  const circlePackManager = new class {
+  const circlePackManager = new class CirclePackManager {
     constructor(opts = {}) {
       this.tightness = 1;
       this.active = true;

@@ -11,9 +11,7 @@ exports.default = workerWrapper;
  * Wraps circle pack manager in a worker-capable function
  */
 function workerWrapper() {
-  var Vector2 =
-  /*#__PURE__*/
-  function () {
+  var Vector2 = /*#__PURE__*/function () {
     function Vector2(x, y) {
       this.x = x || 0;
       this.y = y || 0;
@@ -83,9 +81,7 @@ function workerWrapper() {
     return Vector2;
   }();
 
-  var CirclePackPoint =
-  /*#__PURE__*/
-  function () {
+  var CirclePackPoint = /*#__PURE__*/function () {
     function CirclePackPoint(opts) {
       if (opts === void 0) {
         opts = {};
@@ -142,9 +138,7 @@ function workerWrapper() {
     return CirclePackPoint;
   }();
 
-  var CirclePackManager =
-  /*#__PURE__*/
-  function () {
+  var CirclePackManager = /*#__PURE__*/function () {
     function CirclePackManager(opts) {
       if (opts === void 0) {
         opts = {};

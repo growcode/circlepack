@@ -9,9 +9,7 @@ var _Vector = _interopRequireDefault(require("./Vector2"));
 
 var _CirclePackPoint = _interopRequireDefault(require("./CirclePackPoint"));
 
-var CirclePackManager =
-/*#__PURE__*/
-function () {
+var CirclePackManager = /*#__PURE__*/function () {
   function CirclePackManager(opts) {
     if (opts === void 0) {
       opts = {};

@@ -4,9 +4,7 @@
   (factory((global['@thisisgrow/circlepack'] = {})));
 }(this, (function (exports) { 'use strict';
 
-  var Vector2 =
-  /*#__PURE__*/
-  function () {
+  var Vector2 = /*#__PURE__*/function () {
     function Vector2(x, y) {
       this.x = x || 0;
       this.y = y || 0;
@@ -76,9 +74,7 @@
     return Vector2;
   }();
 
-  var Point =
-  /*#__PURE__*/
-  function () {
+  var Point = /*#__PURE__*/function () {
     function Point(opts) {
       if (opts === void 0) {
         opts = {};
@@ -135,9 +131,7 @@
     return Point;
   }();
 
-  var CirclePackManager =
-  /*#__PURE__*/
-  function () {
+  var CirclePackManager = /*#__PURE__*/function () {
     function CirclePackManager(opts) {
       if (opts === void 0) {
         opts = {};
@@ -238,9 +232,7 @@
    * Wraps circle pack manager in a worker-capable function
    */
   function workerWrapper() {
-    var Vector2 =
-    /*#__PURE__*/
-    function () {
+    var Vector2 = /*#__PURE__*/function () {
       function Vector2(x, y) {
         this.x = x || 0;
         this.y = y || 0;
@@ -310,9 +302,7 @@
       return Vector2;
     }();
 
-    var CirclePackPoint =
-    /*#__PURE__*/
-    function () {
+    var CirclePackPoint = /*#__PURE__*/function () {
       function CirclePackPoint(opts) {
         if (opts === void 0) {
           opts = {};
@@ -369,9 +359,7 @@
       return CirclePackPoint;
     }();
 
-    var CirclePackManager =
-    /*#__PURE__*/
-    function () {
+    var CirclePackManager = /*#__PURE__*/function () {
       function CirclePackManager(opts) {
         if (opts === void 0) {
           opts = {};

@@ -3,9 +3,7 @@
 exports.__esModule = true;
 exports.default = void 0;
 
-var Vector2 =
-/*#__PURE__*/
-function () {
+var Vector2 = /*#__PURE__*/function () {
   function Vector2(x, y) {
     this.x = x || 0;
     this.y = y || 0;

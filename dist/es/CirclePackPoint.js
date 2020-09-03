@@ -1,8 +1,6 @@
 import Vector2 from './Vector2';
 
-var Point =
-/*#__PURE__*/
-function () {
+var Point = /*#__PURE__*/function () {
   function Point(opts) {
     if (opts === void 0) {
       opts = {};

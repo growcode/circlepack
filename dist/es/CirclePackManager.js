@@ -1,9 +1,7 @@
 import Vector2 from './Vector2';
 import CirclePackPoint from './CirclePackPoint';
 
-var CirclePackManager =
-/*#__PURE__*/
-function () {
+var CirclePackManager = /*#__PURE__*/function () {
   function CirclePackManager(opts) {
     if (opts === void 0) {
       opts = {};

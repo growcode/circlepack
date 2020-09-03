@@ -7,9 +7,7 @@ exports.default = void 0;
 
 var _Vector = _interopRequireDefault(require("./Vector2"));
 
-var Point =
-/*#__PURE__*/
-function () {
+var Point = /*#__PURE__*/function () {
   function Point(opts) {
     if (opts === void 0) {
       opts = {};
