@@ -2,9 +2,9 @@
 
 Packs circles into a larger circle container using physics.
 
-![picture](./examples/circlepack.gif)
+![picture](./examples/circlepack.png)
 
-([Click here for a live demo](https://circlepack.static.thisisgrow.com/))
+[View demo](https://growcode.thisisgrow.com/circlepack).
 
 ## Usage
 
