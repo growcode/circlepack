@@ -4,7 +4,7 @@ Packs circles into a larger circle container using physics.
 
 ![picture](./examples/circlepack.png)
 
-[View demo](https://growcode.thisisgrow.com/circlepack).
+[View demo](https://growcode.github.io/circlepack/).
 
 ## Usage
 
